@@ -34,33 +34,6 @@ class PhotoDetail(APIView):
         return Response({'message':'successfully'})
 
 
-class PhotoProductView(ListCreateAPIView):
-    queryset = PhotoProduct.objects.all()
-    serializer_class = PhotoProductSer
-
-
-class PhotoProductDetail(APIView):
-    def get(self, request, id):
-        try:
-            photo = PhotoProduct.objects.get(id=id)
-            serializer = PhotoProductSer(photo)
-            return Response(serializer.data)
-        except:
-            return Response({'message':"bu id xato"})
-    
-    def patch(self, request, id):
-        photo = PhotoProduct.objects.get(id=id)
-        rasm = request.data.get('photo')
-        photo.photo = rasm
-        photo.save()
-        return Response({'message':'successfully'})
-
-    def delete(self, request, id):
-        photo = PhotoProduct.objects.get(id=id)
-        photo.delete()
-        return Response({'message':'successfully'})
-
-
 class PhotoClientView(ListCreateAPIView):
     queryset = PhotoClient.objects.all()
     serializer_class = PhotoClientSer
@@ -158,52 +131,6 @@ class ServicesDetail(APIView):
     def delete(self, request, id):
         services = Services.objects.get(id=id)
         services.delete()
-        return Response({'message':'successfully'}, status=status.HTTP_204_NO_CONTENT)
-
-
-class ProductsView(APIView):
-    def get(self, request):
-        products = Products.objects.all()
-        serializer = ProductsGetSer(products, many=True)
-        return Response(serializer.data)
-    
-    def post(self, request):
-        a = request.data.getlist('photos', [])
-        serializer = ProductsSer(data=request.data)
-        if serializer.is_valid():
-            s=serializer.save()
-            for i in a:
-                n = PhotoProduct.objects.create(photo=i)
-                s.photos.add(n)
-            return Response(serializer.data, status=status.HTTP_201_CREATED)
-        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
-
-
-class ProductsDetail(APIView):
-    def get(self, request, id):
-        try:
-            products = Products.objects.get(id=id)
-            serializer = ProductsSer(products)
-            return Response(serializer.data)
-        except:
-            return Response({'message':"bu id xato"})
-    
-    def patch(self, request, id):
-        a = request.data.getlist('photos', [])
-        products = Products.objects.get(id=id)
-        serializer = ProductsSer(products, data=request.data, partial=True)
-        if serializer.is_valid():
-            s=serializer.save()
-            if a:
-                for i in a:
-                    n = PhotoProduct.objects.create(photo=i)
-                    s.photos.add(n)
-            return Response(serializer.data)
-        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
-
-    def delete(self, request, id):
-        products = Products.objects.get(id=id)
-        products.delete()
         return Response({'message':'successfully'}, status=status.HTTP_204_NO_CONTENT)
 
 

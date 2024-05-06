@@ -49,11 +49,6 @@ urlpatterns = [
     path('ServicesPhotos/', PhotoView.as_view(), name='ServicePhotos'),
     path('ServicesPhotos/<int:id>/', PhotoDetail.as_view(), name='ServicesPhotoDetail'),
 
-    path('Products/', ProductsView.as_view(), name='products'),
-    path('Products/<int:id>/', ProductsDetail.as_view(), name='products_detail'),
-    path('ProductsPhotos/', PhotoProductView.as_view(), name='ProductPhotos'),
-    path('ProductsPhotos/<int:id>/', PhotoProductDetail.as_view(), name='ProductPhotoDetail'),
-
     path('Projects/', ProjectsView.as_view(), name='projects'),
     path('Projects/<int:id>/', ProjectsDetail.as_view(), name='projects_detail'),
     path('ProjectsPhotos/', PhotoProjectsView.as_view(), name='ProjectPhotos'),
