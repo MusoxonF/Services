@@ -43,18 +43,27 @@ urlpatterns = [
     path('api-auth/', include('rest_framework.urls')),
     path('swagger/', schema_view.with_ui('swagger', cache_timeout=0), name='schema-swagger-ui'),
     path('redoc/', schema_view.with_ui('redoc', cache_timeout=0), name='schema-redoc'),
+    
     path('Services/', ServicesView.as_view(), name='services'),
     path('Services/<int:id>/', ServicesDetail.as_view(), name='services_detail'),
     path('ServicesPhotos/', PhotoView.as_view(), name='ServicePhotos'),
     path('ServicesPhotos/<int:id>/', PhotoDetail.as_view(), name='ServicesPhotoDetail'),
+
     path('Products/', ProductsView.as_view(), name='products'),
     path('Products/<int:id>/', ProductsDetail.as_view(), name='products_detail'),
     path('ProductsPhotos/', PhotoProductView.as_view(), name='ProductPhotos'),
     path('ProductsPhotos/<int:id>/', PhotoProductDetail.as_view(), name='ProductPhotoDetail'),
+
+    path('Projects/', ProjectsView.as_view(), name='projects'),
+    path('Projects/<int:id>/', ProjectsDetail.as_view(), name='projects_detail'),
+    path('ProjectsPhotos/', PhotoProjectsView.as_view(), name='ProjectPhotos'),
+    path('ProjectsPhotos/<int:id>/', PhotoProjectsDetail.as_view(), name='ProjectPhotoDetail'),
+
     path('Clients/', ClientsView.as_view(), name = 'clients'),
     path('Clients/<int:id>/', ClientsDetail.as_view(), name = 'clients_detail'),
     path('ClientsPhotos/', PhotoClientView.as_view(), name='PhotosClient'),
     path('ClientsPhotos/<int:id>/', PhotoClientDetail.as_view(), name='PhotoClientDetail'),
+
     path('Social/', SocialView.as_view(), name='social'),
     path('Social/<int:id>/', SocialDetail.as_view(), name = 'social_detail'),
 ]

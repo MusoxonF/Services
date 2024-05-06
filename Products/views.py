@@ -8,28 +8,28 @@ from.serializers import *
 
 
 class PhotoView(ListCreateAPIView):
-    queryset = Photo.objects.all()
+    queryset = PhotoServices.objects.all()
     serializer_class = PhotoSer
 
 
 class PhotoDetail(APIView):
     def get(self, request, id):
         try:
-            photo = Photo.objects.get(id=id)
+            photo = PhotoServices.objects.get(id=id)
             serializer = PhotoSer(photo)
             return Response(serializer.data)
         except:
             return Response({'message':"bu id xato"})
 
     def patch(self, request, id):
-        photo = Photo.objects.get(id=id)
-        rasm = request.data.get('photos')
+        photo = PhotoServices.objects.get(id=id)
+        rasm = request.data.get('photo')
         photo.photo = rasm
         photo.save()
         return Response({'message':'successfully'})
     
     def delete(self, request, id):
-        photo = Photo.objects.get(id=id)
+        photo = PhotoServices.objects.get(id=id)
         photo.delete()
         return Response({'message':'successfully'})
 
@@ -50,7 +50,7 @@ class PhotoProductDetail(APIView):
     
     def patch(self, request, id):
         photo = PhotoProduct.objects.get(id=id)
-        rasm = request.data.get('photos')
+        rasm = request.data.get('photo')
         photo.photo = rasm
         photo.save()
         return Response({'message':'successfully'})
@@ -77,13 +77,40 @@ class PhotoClientDetail(APIView):
     
     def patch(self, request, id):
         photo = PhotoClient.objects.get(id=id)
-        rasm = request.data.get('photos')
+        rasm = request.data.get('photo')
         photo.photo = rasm
         photo.save()
         return Response({'message':'successfully'})
     
     def delete(self, request, id):
         photo = PhotoClient.objects.get(id=id)
+        photo.delete()
+        return Response({'message':'successfully'})
+
+
+class PhotoProjectsView(ListCreateAPIView):
+    queryset = PhotoProjects.objects.all()
+    serializer_class = PhotoProjectsSer
+
+
+class PhotoProjectsDetail(APIView):
+    def get(self, request, id):
+        try:
+            photo = PhotoProjects.objects.get(id=id)
+            serializer = PhotoProjectsSer(photo)
+            return Response(serializer.data)
+        except:
+            return Response({'message':"bu id xato"})
+    
+    def patch(self, request, id):
+        photo = PhotoProjects.objects.get(id=id)
+        rasm = request.data.get('photo')
+        photo.photo = rasm
+        photo.save()
+        return Response({'message':'successfully'})
+    
+    def delete(self, request, id):
+        photo = PhotoProjects.objects.get(id=id)
         photo.delete()
         return Response({'message':'successfully'})
 
@@ -100,7 +127,7 @@ class ServicesView(APIView):
         if serializer.is_valid():
             s = serializer.save()
             for i in a:
-                n = Photo.objects.create(photo=i)
+                n = PhotoServices.objects.create(photo=i)
                 s.photos.add(n)
             return Response(serializer.data, status=status.HTTP_201_CREATED)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
@@ -123,7 +150,7 @@ class ServicesDetail(APIView):
             s=serializer.save()
             if a:
                 for i in a:
-                    n = Photo.objects.create(photo=i)
+                    n = PhotoServices.objects.create(photo=i)
                     s.photos.add(n)
             return Response(serializer.data)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
@@ -131,7 +158,7 @@ class ServicesDetail(APIView):
     def delete(self, request, id):
         services = Services.objects.get(id=id)
         services.delete()
-        return Response(status=status.HTTP_204_NO_CONTENT)
+        return Response({'message':'successfully'}, status=status.HTTP_204_NO_CONTENT)
 
 
 class ProductsView(APIView):
@@ -177,7 +204,53 @@ class ProductsDetail(APIView):
     def delete(self, request, id):
         products = Products.objects.get(id=id)
         products.delete()
-        return Response(status=status.HTTP_204_NO_CONTENT)
+        return Response({'message':'successfully'}, status=status.HTTP_204_NO_CONTENT)
+
+
+class ProjectsView(APIView):
+    def get(self, request):
+        projects = Projects.objects.all()
+        serializer = ProjectsGetSer(projects, many=True)
+        return Response(serializer.data)
+    
+    def post(self, request):
+        a = request.data.getlist('photos', [])
+        serializer = ProjectsSer(data=request.data)
+        if serializer.is_valid():
+            s=serializer.save()
+            for i in a:
+                n = PhotoProjects.objects.create(photo=i)
+                s.photos.add(n)
+            return Response(serializer.data, status=status.HTTP_201_CREATED)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+
+class ProjectsDetail(APIView):
+    def get(self, request, id):
+        try:
+            projects = Projects.objects.get(id=id)
+            serializer = ProjectsSer(projects)
+            return Response(serializer.data)
+        except:
+            return Response({'message':"bu id xato"})
+
+    def patch(self, request, id):
+        a = request.data.getlist('photos', [])
+        projects = Projects.objects.get(id=id)
+        serializer = ProjectsSer(projects, data=request.data, partial=True)
+        if serializer.is_valid():
+            s=serializer.save()
+            if a:
+                for i in a:
+                    n = PhotoProjects.objects.create(photo=i)
+                    s.photos.add(n)
+            return Response(serializer.data)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+    def delete(self, request, id):
+        projects = Projects.objects.get(id=id)
+        projects.delete()
+        return Response({'message':'successfully'},status=status.HTTP_204_NO_CONTENT)
 
 
 class ClientsView(APIView):
@@ -223,7 +296,7 @@ class ClientsDetail(APIView):
     def delete(self, request, id):
         clients = Clients.objects.get(id=id)
         clients.delete()
-        return Response(status=status.HTTP_204_NO_CONTENT)
+        return Response({'message':'successfully'}, status=status.HTTP_204_NO_CONTENT)
 
 
 class SocialView(APIView):
@@ -260,4 +333,4 @@ class SocialDetail(APIView):
     def delete(self, request, id):
         social = Social.objects.get(id=id)
         social.delete()
-        return Response(status=status.HTTP_204_NO_CONTENT)
+        return Response({'message':'successfully'}, status=status.HTTP_204_NO_CONTENT)
