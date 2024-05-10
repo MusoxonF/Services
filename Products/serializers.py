@@ -52,6 +52,7 @@ class ProjectsSer(serializers.ModelSerializer):
             instance.frontend = validated_data.get('frontend', instance.frontend)
             instance.backend = validated_data.get('backend', instance.backend)
             instance.name = validated_data.get('name', instance.name)
+            instance.services = validated_data.get('services', instance.services)
             instance.link = validated_data.get('link', instance.link)
             instance.title_uz = validated_data.get('title_uz', instance.title_uz)
             instance.title_ru = validated_data.get('title_ru', instance.title_ru)
@@ -72,7 +73,7 @@ class ProjectsGetSer(serializers.ModelSerializer):
     photos = PhotoProjectsSer(many=True)
     class Meta:
         model = Projects
-        fields = ('id', 'photos', 'frontend', 'backend', 'name', 'link', 'title_uz', 'title_ru', 'title_en', 'description_uz', 'description_ru', 'description_en', 'created_at', 'updated_at')
+        fields = ('id', 'photos', 'frontend', 'backend', 'services', 'name', 'link', 'title_uz', 'title_ru', 'title_en', 'description_uz', 'description_ru', 'description_en', 'created_at', 'updated_at')
 
 
 

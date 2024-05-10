@@ -38,7 +38,7 @@ class Projects(models.Model):
     frontend = models.TextField()
     backend = models.TextField()
     type = models.CharField(max_length=255, null=True, blank=True)
-    
+    services = models.TextField(null=True, blank=True)
     name = models.CharField(max_length=255)
     link = models.CharField(max_length=255)
     title_uz = models.CharField(max_length=255)
