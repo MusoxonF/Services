@@ -261,3 +261,40 @@ class SocialDetail(APIView):
         social = Social.objects.get(id=id)
         social.delete()
         return Response({'message':'successfully'}, status=status.HTTP_204_NO_CONTENT)
+
+
+class DevelopersView(APIView):
+    def get(self, request):
+        developers = Developers.objects.all()
+        serializer = DevelopersSer(developers, many=True)
+        return Response(serializer.data)
+
+    def post(self, request):
+        serializer = DevelopersSer(data=request.data)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data, status=status.HTTP_201_CREATED)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+
+class DevelopersDetail(APIView):
+    def get(self, request, id):
+        try:
+            developers = Developers.objects.get(id=id)
+            serializer = DevelopersSer(developers)
+            return Response(serializer.data)
+        except:
+            return Response({'message':"bu id xato"})
+    
+    def patch(self, request, id):
+        developers = Developers.objects.get(id=id)
+        serializer = DevelopersSer(developers, data=request.data, partial=True)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+    
+    def delete(self, request, id):
+        developers = Developers.objects.get(id=id)
+        developers.delete()
+        return Response({'message':'successfully'}, status=status.HTTP_204_NO_CONTENT)

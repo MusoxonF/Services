@@ -37,6 +37,8 @@ class Services(models.Model):
 class Projects(models.Model):
     frontend = models.TextField()
     backend = models.TextField()
+    type = models.CharField(max_length=255, null=True, blank=True)
+    
     name = models.CharField(max_length=255)
     link = models.CharField(max_length=255)
     title_uz = models.CharField(max_length=255)
@@ -72,3 +74,24 @@ class Social(models.Model):
 
     def __str__(self):
         return self.telegram
+
+
+class Developers(models.Model):
+    Jins = [
+        ('ayol', 'Ayol'),
+        ('erkak', 'Erkak'),
+    ]
+    fullname = models.CharField(max_length=50)
+    image = models.ImageField(null=True, blank=True)
+    kasb = models.CharField(max_length=100)
+    instagram = models.CharField(max_length=50, blank=True, null=True)
+    github = models.CharField(max_length=50, blank=True, null=True)
+    linkedin = models.CharField(max_length=50, null=True, blank=True)
+    telegram = models.CharField(max_length=50)
+    facebook = models.CharField(max_length=50, null=True, blank=True)
+    gender = models.CharField(choices=Jins, max_length=5)
+    created_at = models.DateTimeField(auto_now_add=True, null=True, blank=True)
+    updated_at = models.DateTimeField(auto_now=True, null=True, blank=True)
+
+    def __str__(self):
+        return self.fullname

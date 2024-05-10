@@ -111,3 +111,20 @@ class SocialSer(serializers.ModelSerializer):
     class Meta:
         model = Social
         fields = '__all__'
+
+
+class DevelopersSer(serializers.ModelSerializer):
+    class Meta:
+        model = Developers
+        fields = '__all__'
+        def update(self, instance, validated_data):
+            instance.fullname = validated_data.get('fullname', instannce.fullname)
+            instance.image = validated_data.get('image', instannce.image)
+            instance.kasb = validated_data.get('kasb', instance.kasb)
+            instance.github = validated_data.get('github', instance.github)
+            instance.linkedin = validated_data.get('linkedin', instance.linkedin)
+            instance.facebook = validated_data.get('facebook', instance.facebook)
+            instance.telegram = validated_data.get('telegram', instance.telegram)
+            instance.instagram = validated_data.get('instagram', instance.instagram)
+            instance.save()
+            return instance

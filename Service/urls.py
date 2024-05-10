@@ -61,6 +61,9 @@ urlpatterns = [
 
     path('Social/', SocialView.as_view(), name='social'),
     path('Social/<int:id>/', SocialDetail.as_view(), name = 'social_detail'),
+
+    path('Developers/', DevelopersView.as_view(), name='developers'),
+    path('Developers/<int:id>/', DevelopersDetail.as_view(), name = 'developers_detail'),
 ]
 
 urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
